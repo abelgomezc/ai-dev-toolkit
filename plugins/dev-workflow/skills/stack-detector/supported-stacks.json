@@ -1,0 +1,104 @@
+{
+  "stacks": {
+    "java-spring": {
+      "name": "Java 21 + Spring Boot 3.x",
+      "build_tools": ["maven", "gradle"],
+      "test_commands": {
+        "maven": "./mvnw verify",
+        "gradle": "./gradlew check"
+      },
+      "lint_commands": {
+        "maven": "./mvnw checkstyle:check spotbugs:check",
+        "gradle": "./gradlew checkstyleMain spotbugsMain"
+      },
+      "coverage_tool": "jacoco",
+      "coverage_min": 80,
+      "skills": [
+        "stack-java-spring",
+        "spring-microservices-patterns",
+        "api-design-review",
+        "security-review-owasp",
+        "db-migration-review"
+      ],
+      "file_patterns": ["**/*.java", "**/pom.xml", "**/build.gradle*"],
+      "config_files": ["pom.xml", "build.gradle", "build.gradle.kts", "settings.gradle"]
+    },
+    "python-fastapi": {
+      "name": "Python 3.11+ + FastAPI",
+      "package_managers": ["pip", "poetry", "uv", "pipenv"],
+      "test_commands": {
+        "pip": "pytest --cov=src --cov-fail-under=80",
+        "poetry": "poetry run pytest --cov=src --cov-fail-under=80",
+        "uv": "uv run pytest --cov=src --cov-fail-under=80"
+      },
+      "lint_commands": {
+        "pip": "ruff check . && mypy src",
+        "poetry": "poetry run ruff check . && poetry run mypy src"
+      },
+      "coverage_tool": "pytest-cov",
+      "coverage_min": 80,
+      "skills": [
+        "stack-python-fastapi",
+        "api-design-review",
+        "security-review-owasp",
+        "test-strategy"
+      ],
+      "file_patterns": ["**/*.py", "**/pyproject.toml", "**/requirements*.txt", "**/Pipfile"],
+      "config_files": ["pyproject.toml", "requirements.txt", "requirements-dev.txt", "Pipfile", "poetry.lock", "uv.lock"]
+    },
+    "node-react": {
+      "name": "Node.js 20+ + React 18 + TypeScript",
+      "package_managers": ["npm", "yarn", "pnpm"],
+      "test_commands": {
+        "npm": "npm run test:ci",
+        "yarn": "yarn test:ci",
+        "pnpm": "pnpm test:ci"
+      },
+      "lint_commands": {
+        "npm": "npm run lint",
+        "yarn": "yarn lint",
+        "pnpm": "pnpm lint"
+      },
+      "build_commands": {
+        "npm": "npm run build",
+        "yarn": "yarn build",
+        "pnpm": "pnpm build"
+      },
+      "skills": [
+        "react-component-patterns",
+        "tailwind-shadcn-stack",
+        "forms-and-validation",
+        "accessibility-wcag",
+        "responsive-and-performance"
+      ],
+      "file_patterns": ["**/*.tsx", "**/*.ts", "**/package.json", "**/tsconfig.json"],
+      "config_files": ["package.json", "tsconfig.json", "vite.config.ts", "next.config.js", "jest.config.js"]
+    },
+    "angular": {
+      "name": "Angular 17+ + TypeScript",
+      "package_managers": ["npm", "yarn", "pnpm"],
+      "test_commands": {
+        "npm": "npm run test:ci",
+        "yarn": "yarn test:ci",
+        "pnpm": "pnpm test:ci"
+      },
+      "lint_commands": {
+        "npm": "npm run lint",
+        "yarn": "yarn lint",
+        "pnpm": "pnpm lint"
+      },
+      "skills": [
+        "angular-ui-patterns",
+        "forms-and-validation",
+        "accessibility-wcag",
+        "responsive-and-performance"
+      ],
+      "file_patterns": ["**/*.ts", "**/*.html", "**/*.scss", "**/angular.json"],
+      "config_files": ["angular.json", "tsconfig.json", "package.json"]
+    }
+  },
+  "detection": {
+    "min_confidence": 60,
+    "monorepo_threshold": 80
+  }
+}

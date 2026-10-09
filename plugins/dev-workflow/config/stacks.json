@@ -1,0 +1,135 @@
+{
+  "stacks": {
+    "java-spring": {
+      "name": "Java 21 + Spring Boot 3.x",
+      "build_tools": {
+        "maven": {
+          "detect_files": ["pom.xml", "mvnw"],
+          "test_command": "./mvnw verify",
+          "lint_command": "./mvnw checkstyle:check spotbugs:check",
+          "compile_command": "./mvnw compile",
+          "coverage_tool": "jacoco",
+          "coverage_min_line": 80,
+          "coverage_min_branch": 70,
+          "coverage_report_path": "target/site/jacoco/index.html"
+        },
+        "gradle": {
+          "detect_files": ["build.gradle", "build.gradle.kts", "gradlew"],
+          "test_command": "./gradlew check",
+          "lint_command": "./gradlew checkstyleMain spotbugsMain",
+          "compile_command": "./gradlew compileJava",
+          "coverage_tool": "jacoco",
+          "coverage_min_line": 80,
+          "coverage_min_branch": 70,
+          "coverage_report_path": "build/reports/jacoco/test/html/index.html"
+        }
+      },
+      "skills": [
+        "stack-java-spring",
+        "spring-microservices-patterns",
+        "api-design-review",
+        "security-review-owasp",
+        "db-migration-review",
+        "test-strategy"
+      ],
+      "file_patterns": ["**/*.java", "**/pom.xml", "**/build.gradle*"],
+      "config_files": ["pom.xml", "build.gradle", "build.gradle.kts", "settings.gradle"]
+    },
+    "python-fastapi": {
+      "name": "Python 3.11+ + FastAPI",
+      "package_managers": {
+        "pip": {
+          "detect_files": ["requirements.txt", "requirements-dev.txt"],
+          "test_command": "pytest --cov=src --cov-fail-under=80 --cov-report=term-missing",
+          "lint_command": "ruff check . && mypy .",
+          "coverage_tool": "pytest-cov",
+          "coverage_min_line": 80,
+          "coverage_min_branch": 70
+        },
+        "poetry": {
+          "detect_files": ["pyproject.toml", "poetry.lock"],
+          "test_command": "poetry run pytest --cov=src --cov-fail-under=80 --cov-report=term-missing",
+          "lint_command": "poetry run ruff check . && poetry run mypy .",
+          "coverage_tool": "pytest-cov",
+          "coverage_min_line": 80,
+          "coverage_min_branch": 70
+        },
+        "uv": {
+          "detect_files": ["pyproject.toml", "uv.lock"],
+          "test_command": "uv run pytest --cov=src --cov-fail-under=80 --cov-report=term-missing",
+          "lint_command": "uv run ruff check . && uv run mypy .",
+          "coverage_tool": "pytest-cov",
+          "coverage_min_line": 80,
+          "coverage_min_branch": 70
+        }
+      },
+      "skills": [
+        "stack-python-fastapi",
+        "api-design-review",
+        "security-review-owasp",
+        "test-strategy"
+      ],
+      "file_patterns": ["**/*.py", "**/pyproject.toml", "**/requirements*.txt", "**/Pipfile"],
+      "config_files": ["pyproject.toml", "requirements.txt", "requirements-dev.txt", "Pipfile", "poetry.lock", "uv.lock"]
+    },
+    "node-react": {
+      "name": "Node.js 20+ + React 18 + TypeScript",
+      "package_managers": {
+        "npm": {
+          "detect_files": ["package.json", "package-lock.json"],
+          "test_command": "npm run test:ci",
+          "lint_command": "npm run lint",
+          "build_command": "npm run build",
+          "typecheck_command": "npm run typecheck"
+        },
+        "yarn": {
+          "detect_files": ["package.json", "yarn.lock"],
+          "test_command": "yarn test:ci",
+          "lint_command": "yarn lint",
+          "build_command": "yarn build",
+          "typecheck_command": "yarn typecheck"
+        },
+        "pnpm": {
+          "detect_files": ["package.json", "pnpm-lock.yaml"],
+          "test_command": "pnpm test:ci",
+          "lint_command": "pnpm lint",
+          "build_command": "pnpm build",
+          "typecheck_command": "pnpm typecheck"
+        }
+      },
+      "skills": [
+        "react-component-patterns",
+        "tailwind-shadcn-stack",
+        "forms-and-validation",
+        "accessibility-wcag",
+        "responsive-and-performance"
+      ],
+      "file_patterns": ["**/*.tsx", "**/*.ts", "**/package.json", "**/tsconfig.json"],
+      "config_files": ["package.json", "tsconfig.json", "vite.config.ts", "next.config.js", "jest.config.js"]
+    },
+    "angular": {
+      "name": "Angular 17+ + TypeScript",
+      "package_managers": {
+        "npm": {
+          "detect_files": ["package.json", "package-lock.json", "angular.json"],
+          "test_command": "npm run test:ci",
+          "lint_command": "npm run lint",
+          "build_command": "npm run build"
+        }
+      },
+      "skills": [
+        "angular-ui-patterns",
+        "forms-and-validation",
+        "accessibility-wcag",
+        "responsive-and-performance"
+      ],
+      "file_patterns": ["**/*.ts", "**/*.html", "**/*.scss", "**/angular.json"],
+      "config_files": ["angular.json", "tsconfig.json", "package.json"]
+    }
+  },
+  "detection": {
+    "min_confidence": 60,
+    "monorepo_threshold": 80
+  },
+  "default_stack": "unknown"
+}

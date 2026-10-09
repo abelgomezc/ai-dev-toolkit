@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "hooks": [
+    {
+      "id": "run-checks-post-edit",
+      "description": "Ejecuta verificaciones (lint, typecheck, tests) después de editar archivos de código",
+      "type": "post_edit",
+      "match": {
+        "paths": [
+          "**/*.java",
+          "**/*.py",
+          "**/*.ts",
+          "**/*.tsx",
+          "**/*.js",
+          "**/*.jsx",
+          "**/pom.xml",
+          "**/build.gradle*",
+          "**/pyproject.toml",
+          "**/package.json",
+          "**/requirements*.txt"
+        ]
+      },
+      "command": ".claude-plugin/scripts/run-checks.sh",
+      "working_directory": "${plugin_root}",
+      "timeout_ms": 120000,
+      "env": {
+        "PLUGIN_ROOT": "${plugin_root}"
+      },
+      "on_failure": "warn"
+    },
+    {
+      "id": "guard-sensitive-pre-edit",
+      "description": "Bloquea edición de archivos sensibles (.env, claves, credenciales) antes de escribir",
+      "type": "pre_edit",
+      "match": {
+        "paths": ["**/*"]
+      },
+      "command": ".claude-plugin/scripts/guard-sensitive.sh",
+      "args": ["${file_path}"],
+      "working_directory": "${plugin_root}",
+      "timeout_ms": 5000,
+      "env": {
+        "PLUGIN_ROOT": "${plugin_root}"
+      },
+      "on_failure": "block"
+    }
+  ],
+  "variables": {
+    "plugin_root": "plugins/dev-workflow"
+  }
+}

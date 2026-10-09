@@ -1,0 +1,196 @@
+name: Validate ai-dev-toolkit
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  validate:
+    name: Validate Repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq jq python3 python3-pip shellcheck
+          pip3 install --quiet jsonschema
+      
+      - name: Make scripts executable
+        run: |
+          find . -name "*.sh" -type f -exec chmod +x {} \;
+      
+      - name: Validate all JSON files
+        run: |
+          echo "=== Validando JSON files ==="
+          find . -name "*.json" -not -path "./node_modules/*" -not -path "./.git/*" | while read file; do
+            if jq empty "$file" 2>/dev/null; then
+              echo "✓ $file"
+            else
+              echo "✗ $file (INVALID)"
+              exit 1
+            fi
+          done
+      
+      - name: Validate YAML frontmatter
+        run: |
+          echo "=== Validando frontmatter ==="
+          find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" | while read file; do
+            if head -1 "$file" | grep -q "^---$"; then
+              echo "✓ $file"
+            else
+              # Allow README and CHANGELOG without frontmatter
+              case "$file" in
+                */README.md|*/CHANGELOG.md|*/LICENSE.md) ;;
+                *) echo "✗ $file (sin frontmatter)"; exit 1 ;;
+              esac
+            fi
+          done
+      
+      - name: Shellcheck all scripts
+        run: |
+          echo "=== Shellcheck ==="
+          find . -name "*.sh" -not -path "./node_modules/*" -not -path "./.git/*" | while read file; do
+            if shellcheck -x "$file"; then
+              echo "✓ $file"
+            else
+              echo "✗ $file (shellcheck failed)"
+              exit 1
+            fi
+          done
+      
+      - name: Validate plugin structure (dev-workflow)
+        run: |
+          echo "=== Validando estructura dev-workflow ==="
+          ./plugins/dev-workflow/tests/test-plugin-structure.sh
+      
+      - name: Validate hooks (dev-workflow)
+        run: |
+          echo "=== Validando hooks dev-workflow ==="
+          ./plugins/dev-workflow/tests/test-hooks.sh
+      
+      - name: Validate workflow contract schema
+        run: |
+          echo "=== Validando workflow-contract schema ==="
+          python3 -c "
+import json, jsonschema
+with open('plugins/dev-workflow/skills/workflow-contract/workflow-contract-schema.json') as f:
+    schema = json.load(f)
+with open('plugins/dev-workflow/skills/workflow-contract/workflow-contract-example.json') as f:
+    example = json.load(f)
+jsonschema.validate(instance=example, schema=schema)
+print('✓ Example validates against schema')
+"
+      
+      - name: Validate detect-stack.sh output
+        run: |
+          echo "=== Probando detect-stack.sh ==="
+          ./plugins/dev-workflow/scripts/detect-stack.sh | jq .
+      
+      - name: Validate run-checks.sh dry-run
+        run: |
+          echo "=== Probando run-checks.sh --dry-run ==="
+          ./plugins/dev-workflow/scripts/run-checks.sh --dry-run --stack java-spring
+          ./plugins/dev-workflow/scripts/run-checks.sh --dry-run --stack python-fastapi
+      
+      - name: Validate guard-sensitive.sh
+        run: |
+          echo "=== Probando guard-sensitive.sh ==="
+          echo "test content" > /tmp/test-file.txt
+          ./plugins/dev-workflow/scripts/guard-sensitive.sh /tmp/test-file.txt --dry-run
+          echo "password = \"secret123\"" > /tmp/bad-file.txt
+          if ./plugins/dev-workflow/scripts/guard-sensitive.sh /tmp/bad-file.txt --dry-run 2>&1 | grep -q "BLOQUEADO"; then
+            echo "✓ Detectó contenido sensible"
+          else
+            echo "✗ No detectó contenido sensible"
+            exit 1
+          fi
+      
+      - name: Validate validate-contract.sh
+        run: |
+          echo "=== Probando validate-contract.sh ==="
+          ./plugins/dev-workflow/scripts/validate-contract.sh plugins/dev-workflow/skills/workflow-contract/workflow-contract-example.json
+      
+      - name: Check required files exist
+        run: |
+          echo "=== Verificando archivos requeridos ==="
+          REQUIRED_FILES=(
+            "LICENSE"
+            "README.md"
+            ".gitignore"
+            ".claude-plugin/marketplace.json"
+            "plugins/dev-workflow/.claude-plugin/plugin.json"
+            "plugins/cicd-security-triage/.claude-plugin/plugin.json"
+            "plugins/frontend-ui/.claude-plugin/plugin.json"
+            "plugins/context-toolkit/.claude-plugin/plugin.json"
+            "docs/ARCHITECTURE.md"
+            "docs/CONVENTIONS.md"
+            "docs/TESTING-STATUS.md"
+            "AGENTS.md"
+          )
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [[ -f "$file" ]]; then
+              echo "✓ $file"
+            else
+              echo "✗ $file (FALTANTE)"
+              exit 1
+            fi
+          done
+
+  validate-marketplace:
+    name: Validate Marketplace Structure
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Validate marketplace.json structure
+        run: |
+          echo "=== Validando marketplace.json ==="
+          jq -e '.name and .version and .plugins and (.plugins | length >= 4)' .claude-plugin/marketplace.json
+          jq -e '.plugins[] | select(.name == "dev-workflow")' .claude-plugin/marketplace.json
+          jq -e '.plugins[] | select(.name == "cicd-security-triage")' .claude-plugin/marketplace.json
+          jq -e '.plugins[] | select(.name == "frontend-ui")' .claude-plugin/marketplace.json
+          jq -e '.plugins[] | select(.name == "context-toolkit")' .claude-plugin/marketplace.json
+          echo "✓ marketplace.json tiene 4 plugins declarados"
+
+  validate-plugins:
+    name: Validate Each Plugin
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    strategy:
+      matrix:
+        plugin: [dev-workflow, cicd-security-triage, frontend-ui, context-toolkit]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Validate plugin manifest
+        run: |
+          echo "=== Validando plugin: ${{ matrix.plugin }} ==="
+          PLUGIN_FILE="plugins/${{ matrix.plugin }}/.claude-plugin/plugin.json"
+          if [[ -f "$PLUGIN_FILE" ]]; then
+            jq empty "$PLUGIN_FILE"
+            echo "✓ $PLUGIN_FILE JSON válido"
+            
+            # Check required fields
+            jq -e '.name and .version and .description and .agents and .skills' "$PLUGIN_FILE"
+            echo "✓ Campos requeridos presentes"
+          else
+            echo "✗ $PLUGIN_FILE no encontrado"
+            exit 1
+          fi
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true

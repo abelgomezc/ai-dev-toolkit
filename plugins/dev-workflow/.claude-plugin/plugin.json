@@ -1,0 +1,37 @@
+{
+  "name": "dev-workflow",
+  "version": "0.1.0",
+  "description": "Flujo multiagente (arquitecto, implementador, revisor, QA) independiente del lenguaje con skills de dominio profundos",
+  "author": "Abel Gomez",
+  "license": "MIT",
+  "repository": "https://github.com/abelgomez/ai-dev-toolkit",
+  "agents": [
+    "agents/architect.md",
+    "agents/implementer.md",
+    "agents/reviewer.md",
+    "agents/qa.md"
+  ],
+  "skills": [
+    "skills/workflow-contract",
+    "skills/stack-detector",
+    "skills/stack-java-spring",
+    "skills/stack-python-fastapi",
+    "skills/review-checklist",
+    "skills/test-strategy",
+    "skills/spring-microservices-patterns",
+    "skills/api-design-review",
+    "skills/security-review-owasp",
+    "skills/db-migration-review"
+  ],
+  "commands": [
+    "commands/feature.md"
+  ],
+  "hooks": "hooks/hooks.json",
+  "scripts": [
+    "scripts/run-checks.sh",
+    "scripts/guard-sensitive.sh"
+  ],
+  "config": [
+    "config/stacks.json"
+  ]
+}

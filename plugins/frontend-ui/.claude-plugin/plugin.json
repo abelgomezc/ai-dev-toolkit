@@ -1,0 +1,31 @@
+{
+  "name": "frontend-ui",
+  "version": "0.1.0",
+  "description": "Diseño e implementación de interfaces profesionales con React/TypeScript, Tailwind, shadcn/ui, y stack alterno Angular",
+  "author": "Abel Gomez",
+  "license": "MIT",
+  "repository": "https://github.com/abelgomez/ai-dev-toolkit",
+  "agents": [
+    "agents/ui-designer.md",
+    "agents/ui-implementer.md",
+    "agents/ui-reviewer.md"
+  ],
+  "skills": [
+    "skills/design-system-foundations",
+    "skills/react-component-patterns",
+    "skills/tailwind-shadcn-stack",
+    "skills/angular-ui-patterns",
+    "skills/forms-and-validation",
+    "skills/data-display-and-charts",
+    "skills/accessibility-wcag",
+    "skills/responsive-and-performance",
+    "skills/ui-review-checklist"
+  ],
+  "commands": [
+    "commands/ui.md"
+  ],
+  "scripts": [
+    "scripts/check-a11y.sh",
+    "scripts/check-bundle.sh"
+  ]
+}

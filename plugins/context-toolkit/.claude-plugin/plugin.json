@@ -1,0 +1,17 @@
+{
+  "name": "context-toolkit",
+  "version": "0.1.0",
+  "description": "Ahorro de contexto y tokens, continuidad entre sesiones: CLAUDE.md writer, codebase map, session handoff",
+  "author": "Abel Gomez",
+  "license": "MIT",
+  "repository": "https://github.com/abelgomez/ai-dev-toolkit",
+  "skills": [
+    "skills/claude-md-writer",
+    "skills/codebase-map",
+    "skills/session-handoff"
+  ],
+  "commands": [
+    "commands/handoff.md",
+    "commands/map.md"
+  ]
+}

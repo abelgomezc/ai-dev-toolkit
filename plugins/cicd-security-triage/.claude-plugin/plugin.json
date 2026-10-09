@@ -1,0 +1,27 @@
+{
+  "name": "cicd-security-triage",
+  "version": "0.1.0",
+  "description": "Triage de reportes de seguridad de CI/CD (Grype, SonarQube, StackHawk) con parsers que normalizan reportes grandes",
+  "author": "Abel Gomez",
+  "license": "MIT",
+  "repository": "https://github.com/abelgomez/ai-dev-toolkit",
+  "agents": [
+    "agents/analyst.md",
+    "agents/fixer.md",
+    "agents/qa.md"
+  ],
+  "skills": [
+    "skills/severity-rules",
+    "skills/false-positive-triage",
+    "skills/report-formats"
+  ],
+  "scripts": [
+    "scripts/parse-grype.py",
+    "scripts/parse-sonar.py",
+    "scripts/parse-stackhawk.py"
+  ],
+  "tests": [
+    "tests/fixtures",
+    "tests/test-parsers.py"
+  ]
+}
