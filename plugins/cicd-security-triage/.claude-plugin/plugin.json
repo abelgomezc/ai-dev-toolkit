@@ -20,6 +20,9 @@
     "scripts/parse-sonar.py",
     "scripts/parse-stackhawk.py"
   ],
+  "commands": [
+    "commands/security-triage.md"
+  ],
   "tests": [
     "tests/fixtures",
     "tests/test-parsers.py"

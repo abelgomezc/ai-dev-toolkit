@@ -126,17 +126,20 @@ plugin-name/
 - Parsers Python normalizan reportes Grype/SonarQube/StackHawk ANTES de que el modelo los lea
 - Agentes: analyst (clasifica, descarta FP), fixer (propone fix mínimo), qa (valida fix)
 - Fixtures anonimizados + tests de parsers
+- 3 skills: severity-rules (R1-R10), false-positive-triage (R1-R7), report-formats (schema v1.0, R1-R8)
+- Command: /security-triage (entry point con parser detection + auto-fix)
 
 ### frontend-ui
 - Agentes: ui-designer (read), ui-implementer (write), ui-reviewer (read)
 - Stack principal: React 18 + TS + Tailwind + shadcn/ui + React Hook Form + Zod + TanStack Query + Recharts
 - Stack alterno: Angular 17+ (Material/PrimeNG)
-- Skills: design-system, component-patterns, a11y, responsive, forms, charts, review-checklist
+- Skills: design-system, component-patterns, a11y (WCAG-1 through WCAG-9), responsive (RAP-1 through RAP-14), forms, charts, review-checklist (41 rules R1-R41)
+- Scripts: check-a11y.sh, check-bundle.sh
 
 ### context-toolkit
-- Skills: claude-md-writer, codebase-map, session-handoff
-- Comandos: handoff, map
-- Enfoque: continuidad entre sesiones, ahorro de tokens
+- Skills: claude-md-writer (R1-R6), codebase-map (R1-R8), session-handoff (R1-R8)
+- Comandos: handoff.md, map.md
+- Enfoque: continuidad entre sesiones, ahorro de tokens (output < 4KB)
 
 ## Evaluaciones (evals)
 
@@ -155,17 +158,20 @@ evals/
 - Entrada → Salida esperada → Criterio de puntuación
 - Comparación: misma tarea CON plugin vs SIN plugin
 - Resultados registrados en `TESTING-STATUS.md` tal cual (aunque no favorables)
+- 20 casos totales (5 por plugin), run-evals.py con modo simulación + metodología CON vs SIN
 
 ## CI/CD
 
 ### Pipeline (`.github/workflows/validate.yml`)
-1. **validate**: JSON, frontmatter, shellcheck, test-plugin-structure, test-hooks, schema, scripts
+1. **validate**: JSON, frontmatter, shellcheck, test-plugin-structure, test-hooks, schema, scripts, skills validation
 2. **validate-marketplace**: marketplace.json estructura + 4 plugins
 3. **validate-plugins**: Cada plugin individual (matrix)
 
 ### Validación Local
 ```bash
 ./scripts/validate-all.sh
+# Validates: 11 JSON files, 15 frontmatter files, 12 scripts, 25 skills
+# Runs: test-plugin-structure.sh, test-hooks.sh
 ```
 
 ## Limitaciones Conocidas
@@ -177,6 +183,8 @@ evals/
 5. **Bash en Windows**: Scripts requieren WSL/Git Bash; no hay versiones .ps1
 6. **Dependencias**: `jq`, `python3`, `jsonschema` requeridos para validación completa
 7. **Versiones librerías**: Spring Boot 3.2.x, FastAPI 0.109+, etc. - verificar al usar
+8. **Python no disponible**: Parsers y run-evals.py no ejecutables en Git Bash Windows
+9. **Token savings no medidos**: Los ahorros en evals son estimados, no medidos en runtime real
 
 ## Decisiones de Diseño Clave
 

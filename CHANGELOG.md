@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial marketplace structure with 4 plugins
 - dev-workflow plugin with complete multi-agent flow
 - 10 domain skills for dev-workflow
-- Validation scripts and CI/CD pipeline
 
 ## [0.1.0] - 2026-10-09
 
@@ -56,7 +55,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - docs/CONVENTIONS.md: Naming, structure, commits, validation patterns
 - docs/TESTING-STATUS.md: Honest classification (verified/partial/not verified) with evidence
 - AGENTS.md: Complete agent reference with permissions matrix and flows
-- Updated README with full documentation
+    - Updated README with full documentation
+- Evaluation Harness with 20 test cases
+
+### Added - Phase 6: cicd-security-triage
+- 3 agents: Analyst (read-only), Fixer (write), QA Security (read+Bash)
+- 3 skills: severity-rules, false-positive-triage, report-formats
+- 3 Python parsers: parse-grype.py, parse-sonar.py, parse-stackhawk.py
+- 4 test fixtures: grype-sample.json, sonar-issues-sample.json, sonar-hotspots-sample.json, stackhawk-sample.json
+- test-parsers.py: 24 asserts (schema validation + findings verification)
+- Command: security-triage.md entry point
+- Normalized JSON schema (v1.0) for all security report formats
+
+### Added - Phase 7: frontend-ui
+- 3 agents: UI Designer (read-only), UI Implementer (write), UI Reviewer (read-only)
+- 9 skills: accessibility-wcag (WCAG-2.1 AA), responsive-and-performance, ui-review-checklist (41 rules), design-system-foundations, react-component-patterns, tailwind-shadcn-stack, forms-and-validation, data-display-and-charts, angular-ui-patterns
+- 2 scripts: check-a11y.sh (axe-core + eslint-jsx-a11y + Playwright), check-bundle.sh (size analysis per framework)
+- Command: ui.md entry point for design → implementation → review flow
+
+### Added - Phase 8: context-toolkit
+- 3 skills: claude-md-writer (CLAUDE.md generation), codebase-map (directory + hotspot analysis), session-handoff (context continuity)
+- 2 commands: handoff.md (session summary), map.md (codebase explorer)
+- Output size optimization: all outputs < 4KB for context budget
+
+### Added - Phase 9: Evaluation Harness
+- 20 eval cases (5 per plugin):
+  - dev-workflow: feature, bug, refactor, security, migration
+  - cicd-security-triage: triage, FP detection, fix validation, config hardening, code audit
+  - frontend-ui: dashboard, accessibility form, responsive table, forms/checkout, analytics charts
+  - context-toolkit: handoff, codebase-map, claude-md writer, token savings, error recovery
+- run-evals.py: runner with simulation mode, JSON/table output, filtering
+- evals/README.md: methodology, metrics, scoring calculation
+
+### Changed
+- README.md: Complete rewrite (Fase 10) - plugin table with counts, full repo structure, evals section
 
 ### Changed
 - README.md: Complete rewrite with usage, structure, validation, status

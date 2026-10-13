@@ -184,8 +184,15 @@ print('✓ Example validates against schema')
             echo "✓ $PLUGIN_FILE JSON válido"
             
             # Check required fields
-            jq -e '.name and .version and .description and .agents and .skills' "$PLUGIN_FILE"
-            echo "✓ Campos requeridos presentes"
+             jq -e '.name and .version and .description' "$PLUGIN_FILE"
+             echo "✓ Campos requeridos presentes"
+             
+             # Check plugins have either agents or commands (or both)
+             if ! jq -e '.agents or .commands or .skills' "$PLUGIN_FILE" >/dev/null 2>&1; then
+               echo "✗ Plugin debe tener al menos agents, commands, or skills"
+               exit 1
+             fi
+             echo "✓ Plugin tiene componentes válidos"
           else
             echo "✗ $PLUGIN_FILE no encontrado"
             exit 1

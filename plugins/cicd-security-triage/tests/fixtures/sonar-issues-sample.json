@@ -1,0 +1,49 @@
+{
+  "projectKey": "my-project",
+  "issues": [
+    {
+      "key": "sonarqube-issue-1",
+      "rule": "java:S2068",
+      "severity": "BLOCKER",
+      "type": "VULNERABILITY",
+      "message": "Hardcoded credentials are security-sensitive",
+      "component": "src/main/java/com/example/UserService.java",
+      "line": 42,
+      "cwe": "CWE-798",
+      "tags": ["security", "credentials"]
+    },
+    {
+      "key": "sonarqube-issue-2",
+      "rule": "java:S5131",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "message": "SQL injection vulnerability",
+      "component": "src/main/java/com/example/OrderRepository.java",
+      "line": 15,
+      "cwe": "CWE-89",
+      "tags": ["security", "sql-injection"]
+    },
+    {
+      "key": "sonarqube-issue-3",
+      "rule": "java:S112",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "message": "Exception should be logged or rethrown",
+      "component": "src/main/java/com/example/PaymentService.java",
+      "line": 78,
+      "cwe": "",
+      "tags": ["exception-handling"]
+    },
+    {
+      "key": "sonarqube-issue-4",
+      "rule": "java:S2095",
+      "severity": "MINOR",
+      "type": "BUG",
+      "message": "Resource leak: 'inputStream' is never closed",
+      "component": "src/main/java/com/example/FileProcessor.java",
+      "line": 23,
+      "cwe": "CWE-772",
+      "tags": ["resource-leak"]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "hotspots": [
+    {
+      "key": "hotspot-1",
+      "ruleKey": "java:S2068",
+      "component": "src/main/java/com/example/Config.java",
+      "line": 10,
+      "message": "Review this hardcoded password",
+      "vulnerabilityProbability": "HIGH",
+      "status": "TO_REVIEW"
+    },
+    {
+      "key": "hotspot-2",
+      "ruleKey": "java:S5131",
+      "component": "src/main/java/com/example/SearchService.java",
+      "line": 55,
+      "message": "Review this dynamic SQL query",
+      "vulnerabilityProbability": "MEDIUM",
+      "status": "TO_REVIEW"
+    }
+  ]
+}

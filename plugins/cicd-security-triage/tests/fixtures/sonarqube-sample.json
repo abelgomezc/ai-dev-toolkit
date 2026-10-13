@@ -1,0 +1,52 @@
+{
+  "issues": [
+    {
+      "key": "SONAR-12345",
+      "rule": "java:S2068",
+      "severity": "BLOCKER",
+      "type": "VULNERABILITY",
+      "message": "Hardcoded password detected in configuration",
+      "component": "com.example:src/main/java/com/example/Config.java",
+      "line": 15,
+      "tags": ["cwe-798", "owasp-a07", "security"],
+      "effort": "10min",
+      "debt": "10min"
+    },
+    {
+      "key": "SONAR-12346",
+      "rule": "java:S5131",
+      "severity": "CRITICAL",
+      "type": "VULNERABILITY",
+      "message": "Cookie should be marked as secure",
+      "component": "com.example:src/main/java/com/example/WebConfig.java",
+      "line": 42,
+      "tags": ["cwe-614", "owasp-a05", "security"],
+      "effort": "20min",
+      "debt": "20min"
+    },
+    {
+      "key": "SONAR-12347",
+      "rule": "java:S2076",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "message": "SQL query built from user input without sanitization",
+      "component": "com.example:src/main/java/com/example/UserRepository.java",
+      "line": 87,
+      "tags": ["cwe-89", "owasp-a03", "sql-injection"],
+      "effort": "30min",
+      "debt": "30min"
+    },
+    {
+      "key": "SONAR-12348",
+      "rule": "java:S5167",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "message": "Switch statement should have a default case",
+      "component": "com.example:src/main/java/com/example/OrderService.java",
+      "line": 123,
+      "tags": ["maintainability"],
+      "effort": "5min",
+      "debt": "5min"
+    }
+  ]
+}

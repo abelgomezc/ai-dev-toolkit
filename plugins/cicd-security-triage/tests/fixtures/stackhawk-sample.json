@@ -1,0 +1,73 @@
+{
+  "scan": {
+    "applicationId": "my-api",
+    "environment": "staging",
+    "scanId": "scan-12345",
+    "startedAt": "2026-01-15T10:00:00Z",
+    "completedAt": "2026-01-15T10:05:00Z"
+  },
+  "findings": [
+    {
+      "findingId": "stackhawk-1",
+      "title": "SQL Injection",
+      "description": "SQL injection vulnerability detected in /api/users endpoint via 'id' parameter",
+      "severity": "CRITICAL",
+      "confidence": "HIGH",
+      "plugin": "SQL_INJECTION",
+      "file": "src/main/java/com/example/UserController.java",
+      "line": 28,
+      "cvssScore": 9.8,
+      "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "references": [
+        "https://owasp.org/www-community/attacks/SQL_Injection",
+        "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html"
+      ]
+    },
+    {
+      "findingId": "stackhawk-2",
+      "title": "Cross-Site Scripting (XSS)",
+      "description": "Reflected XSS in /search endpoint via 'q' parameter",
+      "severity": "HIGH",
+      "confidence": "MEDIUM",
+      "plugin": "XSS",
+      "file": "src/main/java/com/example/SearchController.java",
+      "line": 42,
+      "cvssScore": 7.1,
+      "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+      "references": [
+        "https://owasp.org/www-community/attacks/xss/",
+        "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+      ]
+    },
+    {
+      "findingId": "stackhawk-3",
+      "title": "Path Traversal",
+      "description": "Path traversal in /download endpoint via 'file' parameter",
+      "severity": "MEDIUM",
+      "confidence": "HIGH",
+      "plugin": "PATH_TRAVERSAL",
+      "file": "src/main/java/com/example/FileController.java",
+      "line": 15,
+      "cvssScore": 6.5,
+      "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+      "references": [
+        "https://owasp.org/www-community/attacks/Path_Traversal"
+      ]
+    },
+    {
+      "findingId": "stackhawk-4",
+      "title": "Information Disclosure",
+      "description": "Server version disclosed in HTTP headers",
+      "severity": "LOW",
+      "confidence": "HIGH",
+      "plugin": "INFO_DISCLOSURE",
+      "file": "",
+      "line": 0,
+      "cvssScore": 2.6,
+      "cvssVector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+      "references": [
+        "https://owasp.org/www-community/vulnerabilities/Information_Exposure"
+      ]
+    }
+  ]
+}
